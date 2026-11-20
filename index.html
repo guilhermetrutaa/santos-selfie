@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#10131d">
+  <title>SantoSelfie — Um encontro pra guardar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:'DM Sans',sans-serif;color:#f8f6f0;background:#10131d;font-synthesis:none;text-rendering:optimizeLegibility;--ink:#10131d;--paper:#f8f6f0;--pink:#ff4c9a;--yellow:#f7e65c;--blue:#708cff;--muted:#a3a5b1;--edge:rgba(255,255,255,.15)}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{overscroll-behavior:none;touch-action:manipulation}button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:3px solid var(--yellow);outline-offset:4px}.material-symbols-outlined{font-size:1.25em;vertical-align:middle;font-variation-settings:'FILL' 1}
+    .app{height:100dvh;min-height:520px;width:100%;max-width:1200px;margin:auto;position:relative;overflow:hidden;background:radial-gradient(ellipse at 10% 12%,rgba(255,76,154,.13),transparent 35%),radial-gradient(ellipse at 92% 90%,rgba(112,140,255,.15),transparent 35%),var(--ink)}
+    .topbar{height:76px;padding:0 clamp(20px,5vw,60px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--edge);position:absolute;inset:0 0 auto;z-index:5;background:linear-gradient(#10131ddd,#10131d00)}.brand{font:700 20px 'Space Grotesk';letter-spacing:-.06em}.brand b{color:var(--pink)}.step{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+    .screen{height:100%;width:100%;display:none;position:absolute;inset:0;padding:96px clamp(22px,5vw,64px) 34px;animation:arrive .35s ease both}.screen.active{display:flex}@keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .eyebrow{display:inline-flex;gap:9px;align-items:center;text-transform:uppercase;letter-spacing:.15em;font-size:12px;font-weight:800;color:var(--yellow)}h1,h2,p{margin:0}h1,h2{font-family:'Space Grotesk';letter-spacing:-.055em}h1{font-size:clamp(48px,8.4vw,104px);line-height:.94}h2{font-size:clamp(35px,5vw,62px);line-height:1}.pink{color:var(--pink)}.yellow{color:var(--yellow)}.muted{color:var(--muted)}
+    .cta{display:inline-flex;min-height:62px;align-items:center;justify-content:center;gap:12px;padding:0 26px;border-radius:16px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:17px;box-shadow:0 6px 0 #b6a92f;transition:transform .15s,box-shadow .15s}.cta:active{transform:translateY(4px);box-shadow:0 2px 0 #b6a92f}.ghost{background:#272a35;color:var(--paper);box-shadow:none;border:1px solid var(--edge)}.cta:disabled{opacity:.4;cursor:not-allowed}
+    /* Welcome */
+    #welcome{align-items:center}.welcome-copy{width:52%;padding:24px 3vw 30px 0;display:flex;flex-direction:column;align-items:flex-start;gap:28px;z-index:1}.welcome-copy p{font-size:clamp(17px,2vw,22px);line-height:1.5;color:#c6c5cc;max-width:440px}.welcome-copy h1{max-width:600px}.welcome-copy .cta{margin-top:2px}.photo-wall{position:absolute;right:3%;top:15%;width:51%;height:68%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;transform:rotate(2deg)}.memory{position:relative;border:7px solid #f8f6f0;border-bottom-width:28px;background:linear-gradient(145deg,#655845,#ba8d73 48%,#273b42);border-radius:4px;overflow:hidden;box-shadow:0 15px 45px #0007}.memory:before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 37%,#f2c6a5 0 12%,transparent 12.5%),radial-gradient(ellipse at 50% 82%,#282f3a 0 30%,transparent 30.5%),linear-gradient(135deg,transparent 40%,#fff2),linear-gradient(20deg,#a65675,#e4ba75 45%,#3b5a56)}.memory:nth-child(2){transform:translateY(20px);background:#6884a1}.memory:nth-child(2):before{background:radial-gradient(ellipse at 45% 35%,#c7896b 0 12%,transparent 12.5%),radial-gradient(ellipse at 45% 83%,#d5c7ad 0 29%,transparent 29.5%),linear-gradient(135deg,#3d7d8a,#e4b85e 55%,#d05b8b)}.memory:nth-child(3){transform:translate(24px,-10px);background:#b86e54}.memory:nth-child(3):before{background:radial-gradient(ellipse at 50% 36%,#edc7a5 0 11%,transparent 11.5%),radial-gradient(ellipse at 50% 84%,#e3cf99 0 29%,transparent 29.5%),linear-gradient(135deg,#b84279,#f2bd52 55%,#6383a5)}.memory:nth-child(4){visibility:hidden}.memory span{position:absolute;bottom:-22px;left:10px;color:var(--ink);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.wall-note{position:absolute;right:5%;bottom:4%;background:var(--pink);color:white;padding:13px 18px;border-radius:12px;font-weight:800;transform:rotate(-5deg);box-shadow:4px 4px 0 var(--ink)}.ticker{position:absolute;left:0;bottom:0;white-space:nowrap;color:var(--yellow);font:700 12px 'Space Grotesk';letter-spacing:.2em;opacity:.55}
+    /* Saints */
+    #choose{flex-direction:column;gap:20px;padding-bottom:28px}.screen-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.screen-heading p{color:var(--muted);font-size:15px;max-width:320px;line-height:1.45}.saints{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,minmax(120px,1fr));gap:12px}.saint{position:relative;overflow:hidden;text-align:left;border-radius:16px;background:var(--tile,#2a2d38);border:2px solid transparent;padding:16px;display:flex;flex-direction:column;justify-content:flex-end;transition:transform .15s,border-color .15s}.saint:before{content:attr(data-mark);position:absolute;top:6px;right:16px;font:700 clamp(64px,9vw,110px) 'Space Grotesk';color:rgba(255,255,255,.15);line-height:1}.saint:after{content:'';position:absolute;inset:25% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.67))}.saint:hover{transform:translateY(-3px)}.saint.selected{border-color:var(--yellow);box-shadow:inset 0 0 0 1px var(--yellow)}.saint .name,.saint small,.saint .check{position:relative;z-index:1}.saint .name{font:700 clamp(15px,1.6vw,20px) 'Space Grotesk';letter-spacing:-.03em}.saint small{margin-top:4px;color:#dedce3;font-size:11px}.saint .check{position:absolute;left:12px;top:12px;width:28px;height:28px;border:1px solid #ffffff80;border-radius:50%;display:grid;place-items:center;background:#10131d77}.saint.selected .check{background:var(--yellow);color:var(--ink);border-color:var(--yellow)}.choose-foot{display:flex;align-items:center;justify-content:space-between;gap:12px}.selected-label{font-size:14px;color:var(--muted)}
+    /* Camera */
+    #capture{flex-direction:column;gap:16px}.capture-head{display:flex;align-items:center;justify-content:space-between}.capture-head h2{font-size:clamp(30px,4vw,46px)}.stage{flex:1;min-height:0;position:relative;overflow:hidden;border-radius:20px;background:#252a36;border:1px solid var(--edge)}#camera,#saintVideo{position:absolute;width:100%;height:100%;inset:0;object-fit:cover}#camera{transform:scaleX(-1)}#saintVideo{pointer-events:none;object-fit:contain;z-index:1}#cameraFallback{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 40%,#58647a,#20232c 65%);color:#bfc5d1;text-align:center;padding:20px}.camera-tag{position:absolute;top:16px;left:16px;z-index:2;background:#10131dbb;border:1px solid var(--edge);border-radius:10px;padding:9px 12px;font-size:12px}.camera-tag i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff5555;margin-right:8px}.countdown{position:absolute;z-index:3;inset:0;display:none;place-items:center;background:#10131d33;font:700 clamp(110px,25vw,250px) 'Space Grotesk';color:white;text-shadow:0 5px 35px #000}.countdown.show{display:grid}.stage-message{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);z-index:2;background:#10131dcc;padding:9px 16px;border-radius:30px;font-size:13px;white-space:nowrap}.capture-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    /* Result */
+    #result{align-items:center;gap:clamp(24px,5vw,66px)}.result-photo{height:min(75vh,850px);aspect-ratio:4/5;background:#242733;border:9px solid var(--paper);border-bottom-width:50px;border-radius:4px;box-shadow:12px 14px 0 #0008;object-fit:cover}.result-copy{max-width:430px;display:flex;flex-direction:column;align-items:flex-start;gap:22px}.result-copy p{line-height:1.55;color:#b9bac4}.result-actions{display:flex;flex-direction:column;gap:12px;width:100%}.qr-box{width:100%;min-height:120px;border:1px dashed #ffffff50;border-radius:14px;padding:18px;display:none;align-items:center;gap:16px}.qr-box.show{display:flex}.qr-box img{width:92px;height:92px;background:#fff;padding:5px;border-radius:8px}.qr-box strong{display:block;margin-bottom:6px}.qr-box p{font-size:12px}.result-actions .cta{width:100%}.notice{font-size:12px;color:#9d9faa;line-height:1.45}
+    @media(max-width:760px){.topbar{height:62px}.screen{padding:78px 18px 22px}.step{font-size:9px}.welcome-copy{width:100%;padding:20px 0 180px;gap:19px}.welcome-copy h1{font-size:clamp(52px,15vw,78px)}.photo-wall{top:auto;bottom:62px;right:8%;width:78%;height:33%;gap:8px}.memory{border-width:5px;border-bottom-width:18px}.memory span{font-size:7px;bottom:-15px}.wall-note{font-size:11px;bottom:24px}.ticker{font-size:9px}.screen-heading{align-items:flex-start;flex-direction:column;gap:8px}.screen-heading h2{font-size:38px}.screen-heading p{font-size:13px}.saints{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(5,minmax(76px,1fr));gap:8px}.saint{padding:10px;border-radius:12px}.saint:before{font-size:64px}.saint .name{font-size:15px}.saint small{font-size:9px}.saint .check{width:23px;height:23px;left:8px;top:8px}.choose-foot{align-items:stretch;flex-direction:column}.choose-foot .cta{width:100%;min-height:55px}.selected-label{font-size:12px}.capture-head h2{font-size:30px}.stage{min-height:220px}.capture-actions .cta{min-height:52px;padding:0 17px;font-size:14px}.capture-actions .ghost{padding:0 14px}.stage-message{font-size:11px}.camera-tag{font-size:10px}.countdown{font-size:130px}#result{align-items:center;justify-content:center;gap:20px}.result-photo{height:min(44vh,420px);max-width:52vw;border-width:5px;border-bottom-width:25px}.result-copy{gap:14px;max-width:48%}.result-copy h2{font-size:36px}.result-copy p{font-size:13px}.result-actions .cta{min-height:54px;font-size:13px;padding:0 10px;border-radius:12px}.qr-box{padding:10px;min-height:90px;gap:8px}.qr-box img{width:66px;height:66px}.qr-box p{font-size:10px}.notice{font-size:10px}}
+    @media(max-height:650px) and (min-width:761px){.screen{padding-top:78px;padding-bottom:18px}.saints{gap:8px}.saint{padding:10px}.stage{min-height:180px}.result-photo{height:70vh}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+    /* Direção visual mais próxima do Stitch, com menos adereços. */
+    :root{color:#191c29;background:#f6f5f1;--ink:#191c29;--paper:#fffefa;--pink:#d92778;--yellow:#f6df28;--blue:#164acb;--muted:#666a76;--edge:#dedde2}
+    .app{background:#f6f5f1 url('./assets/bg.svg') center/cover no-repeat;color:#191c29}
+    .topbar{background:#f6f5f1;border-bottom:1px solid #e4e1db}
+    .brand{font-size:18px;letter-spacing:-.045em}.brand b{color:#164acb}
+    .step{color:#777984;letter-spacing:.08em}
+    .screen{animation-duration:.22s}
+    .eyebrow{color:#164acb;font-size:11px;letter-spacing:.1em}
+    h1,h2{letter-spacing:-.045em}h1{font-size:clamp(48px,7.2vw,86px);line-height:.99;font-weight:700;text-wrap:balance}
+    .pink{color:#164acb}.yellow{color:#d92778}
+    .cta{min-height:60px;border-radius:12px;background:#f6df28;color:#191c29;box-shadow:0 3px 0 #d0bd1f;font-size:15px;letter-spacing:.01em}
+    .cta:hover{background:#f9e956}.cta:active{box-shadow:0 1px 0 #d0bd1f;transform:translateY(2px)}
+    .ghost{background:transparent;color:#191c29;box-shadow:none;border:1px solid #d7d5dc}.ghost:hover{background:#eeedf0}
+    #welcome{align-items:center}
+    .welcome-copy{width:48%;gap:24px;padding-right:2vw}
+    .welcome-copy .eyebrow{font-size:12px}
+    .welcome-copy p{font-size:clamp(17px,1.8vw,20px);line-height:1.55;color:#626570;max-width:390px}
+    .welcome-copy .cta{margin-top:4px}
+    .photo-wall{right:5%;top:15%;width:45%;height:65%;gap:12px;transform:rotate(1deg)}
+    .memory{border:5px solid #fffefa;border-bottom-width:22px;border-radius:5px;box-shadow:0 8px 24px #2023311c;background-size:cover;background-position:center}
+    .memory:before{display:none}
+    .memory:nth-child(1){background:linear-gradient(150deg,#d6a382 0 42%,#465460 42% 100%)}
+    .memory:nth-child(2){background:linear-gradient(28deg,#e4b982 0 38%,#477178 38% 100%)}
+    .memory:nth-child(3){background:linear-gradient(135deg,#c65475,#f0cc85 55%,#6383a5)}
+    .memory span{color:#343641;font-size:9px;letter-spacing:.04em}
+    .memory:nth-child(2),.memory:nth-child(3){transform:none}
+    .wall-note{background:#f6df28;color:#191c29;border-radius:4px;box-shadow:none;transform:rotate(-3deg);font-size:12px;padding:10px 13px}
+    .ticker{display:none}
+    #choose{gap:18px}
+    .screen-heading{align-items:center}.screen-heading h2{font-size:clamp(38px,5vw,58px)}
+    .screen-heading p{color:#666a76;max-width:280px}
+    .saints{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,minmax(112px,1fr));gap:10px;overflow:auto;padding:2px 4px 6px}
+    .saint{background:#fffefa;border:1px solid #e4e2dc;border-radius:9px;padding:14px 14px 14px 82px;color:#191c29;min-height:96px;justify-content:center}
+    .saint:before{top:50%;left:14px;right:auto;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--tile) 15%,white);color:var(--tile);font-size:15px;letter-spacing:-.04em}
+    .saint:after{display:none}.saint:hover{transform:none;border-color:#9aa9d0}.saint.selected{border:2px solid #164acb;box-shadow:none;padding-left:81px}
+    .saint .name{font:700 clamp(14px,1.55vw,19px) 'Space Grotesk';line-height:1.15}.saint small{font-size:11px;color:#757783}
+    .saint .check{left:auto;right:12px;top:12px;width:22px;height:22px;background:#f1f0eb;border-color:#e1dfda;color:transparent;font-size:15px}
+    .saint.selected .check{background:#164acb;color:white;border-color:#164acb}
+    .choose-foot{padding-top:2px}.selected-label{color:#6a6d78;font-size:13px}
+    #capture{gap:14px}.capture-head h2{font-size:clamp(32px,4vw,44px)}
+    .stage{border-radius:12px;border:1px solid #d9d8dc;background:#e9e8e4}
+    #cameraFallback{background:#e9e8e4;color:#5f626c}
+    #saintVideo{top:auto;left:1.5%;right:auto;bottom:0;width:min(74%,620px);height:300%;object-fit:contain;object-position:left bottom;transform:scale(1.25);transform-origin:left bottom}
+    .camera-tag{background:#fffefa;color:#20232d;border-color:#fffefa;border-radius:4px}
+    .stage-message{background:#fffefa;color:#252834;border-radius:6px}
+    .capture-actions .ghost{background:#fffefa}
+    #result{gap:clamp(28px,6vw,78px)}
+    .result-photo{border:6px solid #fffefa;border-bottom-width:32px;border-radius:4px;box-shadow:0 8px 28px #20233120;background:#e8e7e2}
+    .result-copy{gap:18px}.result-copy h2{font-size:clamp(42px,6vw,66px)}
+    .result-copy p{color:#666a76}.result-actions{gap:9px}
+    .qr-box{border:1px solid #d9d8dc;border-radius:8px;background:#fffefa}.qr-box strong{color:#242733}.qr-box p,.notice{color:#777984}
+    @media(max-width:760px){
+      .welcome-copy{padding-bottom:180px}.welcome-copy h1{font-size:clamp(48px,13vw,70px)}
+      .photo-wall{right:6%;width:80%;height:30%;bottom:56px;gap:8px}
+      .memory{border-width:4px;border-bottom-width:16px}.memory span{font-size:7px;bottom:-14px}.wall-note{font-size:9px;bottom:20px}
+      .screen-heading h2{font-size:36px}.screen-heading p{font-size:12px}
+      .saints{grid-template-rows:repeat(5,minmax(74px,1fr));gap:7px}.saint{padding:9px 8px 9px 58px;min-height:70px;border-radius:7px}.saint.selected{padding-left:57px}
+      .saint:before{left:8px;width:40px;height:40px;font-size:12px}.saint .name{font-size:13px}.saint small{font-size:9px;margin-top:2px}.saint .check{right:6px;top:6px;width:18px;height:18px}
+      .result-photo{border-width:4px;border-bottom-width:20px}
+    }
+    @media(orientation:portrait){
+      .topbar{height:clamp(62px,5vh,96px);padding-inline:clamp(20px,6vw,72px)}
+      #stepLabel{display:none}
+      .screen{padding:clamp(78px,7vh,130px) clamp(22px,6vw,72px) clamp(24px,4vh,64px)}
+      #welcome{align-items:stretch;justify-content:flex-start}
+      .welcome-copy{width:100%;height:49%;padding:0;gap:clamp(14px,2vh,28px);justify-content:center}
+      .welcome-copy h1{max-width:100%;font-size:clamp(54px,10vw,118px);line-height:.98}
+      .welcome-copy p{font-size:clamp(17px,2.2vw,26px);max-width:680px}
+      .welcome-copy .cta{margin-top:2px;min-height:clamp(60px,5.5vh,86px);padding-inline:clamp(20px,3vw,36px);font-size:clamp(15px,1.6vw,20px)}
+      .photo-wall{top:auto;right:5%;bottom:6%;width:90%;height:36%;grid-template-rows:1fr;gap:clamp(12px,2vw,24px);transform:none}
+      .memory{border-width:clamp(6px,.8vw,10px);border-bottom-width:clamp(34px,4vh,58px);border-radius:3px;aspect-ratio:3/4}
+      .memory:nth-child(1){transform:rotate(-2.5deg)}
+      .memory:nth-child(2){transform:rotate(2.5deg)}
+      .memory span{bottom:calc(clamp(34px,4vh,58px) * -1 + 9px);font-size:clamp(8px,.9vw,12px);font-weight:600;text-transform:none;letter-spacing:0}
+      #choose{gap:clamp(12px,1.6vh,22px)}
+      .screen-heading{width:100%;align-items:center;text-align:center}
+      .screen-heading>div,.screen-heading p{width:100%}
+      .screen-heading p{max-width:460px;text-align:center}
+      .screen-heading h2{font-size:clamp(40px,5vw,66px)}
+      .screen-heading p{font-size:clamp(14px,1.5vw,19px);max-width:34%}
+      .saints{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:clamp(10px,1.2vh,18px);overflow:auto}
+      .choose-foot .cta{min-height:clamp(62px,5.5vh,88px);font-size:clamp(16px,1.7vw,20px)}
+      #capture{gap:clamp(12px,1.5vh,22px)}
+      .capture-head h2{font-size:clamp(36px,4.8vw,62px)}
+      .stage{border-radius:clamp(10px,1.2vw,18px)}
+      .capture-actions .cta{min-height:clamp(62px,5.5vh,88px);padding-inline:clamp(22px,3vw,42px);font-size:clamp(16px,1.7vw,20px)}
+      #result{flex-direction:column;justify-content:center;gap:clamp(12px,1.6vh,24px);text-align:center}
+      .result-photo{height:min(37vh,720px);width:auto;max-width:72vw;aspect-ratio:4/5;border-width:5px;border-bottom-width:clamp(20px,2vh,36px);box-shadow:0 8px 28px #20233120}
+      .result-copy{width:100%;max-width:760px;align-items:center;gap:clamp(8px,1.2vh,16px)}
+      .result-copy h2{font-size:clamp(38px,4.2vw,56px)}
+      .result-copy p{font-size:clamp(14px,1.5vw,18px);max-width:620px}
+      .result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+      .result-actions #again{grid-column:1/-1}
+      .result-actions .cta{min-height:clamp(54px,5vh,76px);font-size:clamp(13px,1.4vw,18px)}
+      .notice{font-size:clamp(10px,1vw,13px)}
+    }
+    @media(orientation:portrait) and (min-width:761px){
+      .screen-heading{align-items:center}
+      .saint{flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(12px,2vh,28px);gap:8px;border-radius:12px}
+      .saint.selected{padding:clamp(11px,2vh,27px)}
+      .saint:before{position:static;transform:none;width:clamp(64px,8vh,126px);height:clamp(64px,8vh,126px);font-size:clamp(18px,2.3vh,32px);margin-bottom:clamp(4px,.8vh,12px)}
+      .saint .name{font-size:clamp(18px,1.7vw,24px)}
+      .saint small{font-size:clamp(12px,1.2vw,16px)}
+      .saint .check{right:clamp(10px,1.4vw,20px);left:auto;top:clamp(10px,1.4vw,20px);width:clamp(26px,2.8vh,38px);height:clamp(26px,2.8vh,38px)}
+    }
+    @media(orientation:portrait){
+      .welcome-copy{align-items:center;text-align:center;gap:clamp(16px,2.2vh,32px)}
+      .welcome-copy h1{font-size:clamp(40px,12vw,132px);line-height:.94}
+      .welcome-copy p{font-size:clamp(18px,2.4vw,28px);text-align:center;text-wrap:balance}
+      .welcome-copy .cta{min-height:clamp(68px,6vh,96px);max-width:100%;padding-inline:clamp(18px,3.5vw,44px);font-size:clamp(14px,1.8vw,22px)}
+    }
+    @media(orientation:portrait) and (max-width:760px){.screen-heading p{max-width:640px}}
+    @media print{body{background:#fff}.app>*{display:none!important}#result{display:flex!important;position:static;padding:0;height:100vh;background:#fff}#result .result-photo{height:95vh;box-shadow:none;border:0;object-fit:contain}#result .result-copy{display:none}}
+    .result-photo{width:auto;aspect-ratio:auto;background:transparent;border:0;border-radius:0;box-shadow:none;object-fit:contain}
+    .topbar{background:transparent;border:0;box-shadow:none;justify-content:center}
+    .brand{position:absolute;left:50%;transform:translateX(-50%);color:#191c29}
+    .step{position:absolute;right:clamp(20px,5vw,60px)}
+
+  </style>
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <header class="topbar"><div class="brand">SANTO<b>SELFIE</b></div><div class="step" id="stepLabel">Uma lembrança de fé e alegria</div></header>
+
+    <section class="screen active" id="welcome" aria-label="Início">
+      <div class="welcome-copy"><span class="eyebrow">Faça parte dessa lembrança</span><h1>Vem tirar<br>uma foto<br><span class="pink">com um santo.</span></h1><p>Escolha seu favorito e leve essa lembrança com você.</p><button class="cta" id="start">QUERO TIRAR MINHA FOTO <span class="material-symbols-outlined">arrow_forward</span></button></div>
+      <div class="photo-wall" aria-label="Duas fotos de visitantes"><div class="memory"><span>um encontro especial</span></div><div class="memory"><span>uma lembrança pra levar</span></div></div>
+      <div class="ticker">FÉ • ALEGRIA • ENCONTROS • LEMBRANÇAS • FÉ • ALEGRIA • ENCONTROS • LEMBRANÇAS •</div>
+    </section>
+
+    <section class="screen" id="choose" aria-label="Escolha do santo">
+      <div class="screen-heading"><div><span class="eyebrow">02 / 04 — SUA COMPANHIA</span><h2>Com quem vai<br>ser a foto?</h2></div><p>Escolha um santo e confirme.</p></div>
+      <div class="saints" id="saints"></div>
+      <div class="choose-foot"><div class="selected-label" id="selectedLabel">Escolha um santo para continuar</div><button class="cta" id="confirm" disabled>CONFIRMAR ESCOLHA <span class="material-symbols-outlined">arrow_forward</span></button></div>
+    </section>
+
+    <section class="screen" id="capture" aria-label="Tirar foto">
+      <div class="capture-head"><div><span class="eyebrow">03 / 04 — PREPARE O SORRISO</span><h2>Olhe pra câmera!</h2></div><span class="step" id="chosenSaint"></span></div>
+      <div class="stage"><div id="cameraFallback"><div><span class="material-symbols-outlined" style="font-size:48px">photo_camera</span><p>Ative a câmera para continuar</p></div></div><video id="camera" autoplay muted playsinline></video><video id="saintVideo" muted playsinline></video><div class="camera-tag"><i></i> CÂMERA AO VIVO</div><div class="countdown" id="countdown"></div><div class="stage-message" id="stageMessage">Seu santo está chegando…</div></div>
+      <div class="capture-actions"><button class="cta ghost" id="backChoose"><span class="material-symbols-outlined">arrow_back</span> VOLTAR</button><button class="cta" id="captureNow" disabled><span class="material-symbols-outlined">photo_camera</span> TIRAR FOTO</button></div>
+    </section>
+
+    <section class="screen" id="result" aria-label="Resultado da foto">
+      <img class="result-photo" id="photoResult" alt="Sua foto com o santo escolhido">
+      <div class="result-copy"><span class="eyebrow">04 / 04 — SUA LEMBRANÇA</span><h2>Ficou<br><span class="yellow">especial.</span></h2><p>Guarde esse encontro com você. Imprima uma cópia agora ou disponibilize a foto no celular pelo QR Code.</p><div class="result-actions"><button class="cta" id="getQr"><span class="material-symbols-outlined">qr_code_2</span> PEGAR NO CELULAR</button><button class="cta ghost" id="print"><span class="material-symbols-outlined">print</span> IMPRIMIR FOTO</button><button class="cta ghost" id="again"><span class="material-symbols-outlined">replay</span> TIRAR OUTRA FOTO</button></div><div class="qr-box" id="qrBox"><div><strong>QR Code precisa de uma foto hospedada</strong><p>Conecte o envio ao servidor do evento para liberar o acesso pelo celular.</p></div></div><div class="notice" id="qrNotice">A impressão está pronta pelo navegador. O envio por QR depende de hospedagem online da foto.</div></div>
+    </section>
+  </main>
+  <script>
+    const saints=[
+      ['São Carlo Acutis','Amigo da juventude','CA','#cc295d'],['Santa Teresinha','Chuva de rosas','ST','#9e3b65'],['São Francisco de Assis','Irmão da criação','FA','#69794e'],['São João Paulo II','Peregrino da esperança','JP','#385d9d'],['Santa Dulce dos Pobres','Anjo bom da Bahia','SD','#bd6c2b'],['São José','Protetor das famílias','SJ','#476e87'],['Santo Antônio','Santo casamenteiro','SA','#a95732'],['São Miguel Arcanjo','Defensor da fé','MA','#425b99'],['São Padre Pio','Frade dos estigmas','PP','#70523f'],['Santa Rita de Cássia','Santa das causas impossíveis','RC','#8756a6']
+    ];
+    const videoFiles={'São Francisco de Assis':'saofrancisco','São José':'saojose','São Padre Pio':'padrepio','Santa Rita de Cássia':'ritadecassia'};
+    const screens=[...document.querySelectorAll('.screen')], stepLabel=document.getElementById('stepLabel');let selected=null,stream=null,photoUrl=null,timers=[],counting=false;
+    function go(id,label){screens.forEach(s=>s.classList.toggle('active',s.id===id));stepLabel.textContent=label;}
+    function clearTimers(){timers.forEach(clearTimeout);timers=[];}
+    document.getElementById('saints').innerHTML=saints.map(([name,tag,mark,color])=>`<button class="saint" style="--tile:${color}" data-name="${name}" data-mark="${mark}" aria-pressed="false"><span class="check material-symbols-outlined">check</span><span class="name">${name}</span><small>${tag}</small></button>`).join('');
+    document.getElementById('saints').addEventListener('click',e=>{const card=e.target.closest('.saint');if(!card)return;selected=card.dataset.name;document.querySelectorAll('.saint').forEach(c=>{const on=c===card;c.classList.toggle('selected',on);c.setAttribute('aria-pressed',String(on));});document.getElementById('selectedLabel').textContent=``;document.getElementById('confirm').disabled=false;});
+    const startFlow=()=>go('choose','02 / 04 — escolha seu santo');document.getElementById('start').onclick=startFlow;document.getElementById('welcome').addEventListener('click',startFlow);
+    async function beginCapture(){counting=false;go('capture','03 / 04 — prepare o sorriso');document.getElementById('chosenSaint').textContent=selected;const cam=document.getElementById('camera'),video=document.getElementById('saintVideo'),fallback=document.getElementById('cameraFallback'),message=document.getElementById('stageMessage');document.getElementById('captureNow').disabled=true;document.getElementById('countdown').classList.remove('show');message.textContent='Seu santo está chegando…';
+      try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});cam.srcObject=stream;fallback.style.display='none';document.getElementById('captureNow').disabled=false;}catch(err){fallback.style.display='grid';fallback.querySelector('p').textContent='Permita o acesso à câmera para tirar a foto.';message.textContent='A câmera precisa ser autorizada no navegador.';return;}
+      const clip=videoFiles[selected];if(!clip){message.textContent='Este santo ainda não tem vídeo. Toque em “Tirar foto” quando estiver preparado.';return;}video.src=`./videos-santos/${clip}.webm`;video.load();video.onended=()=>{video.pause();countdown();};video.onerror=()=>{message.textContent='Não foi possível abrir o vídeo deste santo.';};try{await video.play();}catch{message.textContent='Toque em “Tirar foto” quando estiver preparado.';}
+    }
+    function countdown(){if(counting)return;counting=true;document.getElementById('captureNow').disabled=true;const el=document.getElementById('countdown'),message=document.getElementById('stageMessage');el.classList.add('show');message.textContent='Sorria!';let n=3;el.textContent=n;const tick=()=>{n--;if(n){el.textContent=n;timers.push(setTimeout(tick,1000));}else{el.textContent='✦';timers.push(setTimeout(takePhoto,350));}};timers.push(setTimeout(tick,1000));}
+    function captureFailed(message='Não foi possível gerar a foto. Toque em “Tirar foto” para tentar novamente.'){counting=false;const countdown=document.getElementById('countdown');countdown.classList.remove('show');countdown.textContent='';document.getElementById('captureNow').disabled=false;document.getElementById('stageMessage').textContent=message;}
+    function takePhoto(){clearTimers();const cam=document.getElementById('camera'),video=document.getElementById('saintVideo'),stage=document.querySelector('.stage'),canvas=document.createElement('canvas');canvas.width=stage.clientWidth;canvas.height=stage.clientHeight;if(!cam.videoWidth||!cam.videoHeight||!canvas.width||!canvas.height){captureFailed('A câmera ainda não está pronta. Toque em “Tirar foto” para tentar novamente.');return;}try{const ctx=canvas.getContext('2d'),vw=cam.videoWidth,vh=cam.videoHeight,scale=Math.max(canvas.width/vw,canvas.height/vh),sw=canvas.width/scale,sh=canvas.height/scale,sx=(vw-sw)/2,sy=(vh-sh)/2;ctx.save();ctx.translate(canvas.width,0);ctx.scale(-1,1);ctx.drawImage(cam,sx,sy,sw,sh,0,0,canvas.width,canvas.height);ctx.restore();if(video.readyState>=2&&video.videoWidth){const scale=Math.min(canvas.width*.74/video.videoWidth,canvas.height*1.1/video.videoHeight),w=video.videoWidth*scale,h=video.videoHeight*scale;ctx.drawImage(video,canvas.width*.015,canvas.height-h,w,h);}const frame=Math.round(canvas.width*.04),footer=Math.round(canvas.width*.14),framed=document.createElement('canvas');framed.width=canvas.width+frame*2;framed.height=canvas.height+frame+footer;const frameCtx=framed.getContext('2d');frameCtx.fillStyle='#f8f6f0';frameCtx.fillRect(0,0,framed.width,framed.height);frameCtx.fillStyle='#2451d8';frameCtx.fillRect(frame,Math.round(frame*.4),canvas.width,Math.max(3,Math.round(frame*.08)));frameCtx.drawImage(canvas,frame,frame);const brandSize=Math.max(18,Math.round(canvas.width*.035));frameCtx.font=`700 ${brandSize}px Arial,sans-serif`;const santoWidth=frameCtx.measureText('SANTO').width,brandX=framed.width/2-(santoWidth+frameCtx.measureText('SELFIE').width)/2;frameCtx.fillStyle='#191c28';frameCtx.fillText('SANTO',brandX,canvas.height+frame+footer*.57);frameCtx.fillStyle='#2451d8';frameCtx.fillText('SELFIE',brandX+santoWidth,canvas.height+frame+footer*.57);frameCtx.font=`${Math.max(10,Math.round(canvas.width*.016))}px Arial,sans-serif`;frameCtx.fillStyle='#656a78';const tagline='UMA LEMBRANÇA DE FÉ';frameCtx.fillText(tagline,(framed.width-frameCtx.measureText(tagline).width)/2,canvas.height+frame+footer*.84);const image=framed.toDataURL('image/jpeg',.92);if(image==='data:,'){captureFailed();return;}counting=false;photoUrl=image;document.getElementById('photoResult').src=photoUrl;document.getElementById('qrBox').classList.remove('show');document.getElementById('qrNotice').style.display='';stopCamera();go('result','04 / 04 — sua lembrança');}catch(error){captureFailed(error.name==='SecurityError'?'O navegador bloqueou a foto. Abra o totem pelo servidor local e tente novamente.':undefined);}}
+    function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}document.getElementById('camera').srcObject=null;}
+    document.getElementById('confirm').onclick=beginCapture;document.getElementById('backChoose').onclick=()=>{clearTimers();counting=false;stopCamera();go('choose','02 / 04 — escolha seu santo');};document.getElementById('captureNow').onclick=countdown;
+    document.getElementById('getQr').onclick=()=>document.getElementById('qrBox').classList.add('show');
+    document.getElementById('print').onclick=()=>window.print();document.getElementById('again').onclick=()=>{clearTimers();stopCamera();selected=null;document.querySelectorAll('.saint').forEach(c=>{c.classList.remove('selected');c.setAttribute('aria-pressed','false');});document.getElementById('confirm').disabled=true;document.getElementById('selectedLabel').textContent='Escolha um santo para continuar';photoUrl=null;document.getElementById('photoResult').removeAttribute('src');go('welcome','Uma lembrança de fé e alegria');};
+  </script>
+</body>
+</html>
