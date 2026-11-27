@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel de personagens — SantoSelfie</title>
+  <style>
+    :root{font-family:Arial,sans-serif;color:#191c29;background:#f4f3ef;font-synthesis:none;--blue:#164acb;--yellow:#f6df28;--muted:#707480;--line:#dedde2;--paper:#fffefa}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px}button,select,input{font:inherit}button{cursor:pointer}
+    .layout{width:min(1280px,100%);margin:auto;display:grid;grid-template-columns:minmax(340px,.9fr) minmax(360px,1.05fr);gap:22px;align-items:start}
+    header{grid-column:1/-1;display:flex;align-items:end;justify-content:space-between;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+    h1{font-size:clamp(26px,3vw,36px);margin:0;letter-spacing:-.04em}h2{font-size:16px;margin:0}
+    .brand{font-weight:800;letter-spacing:-.06em}.brand b{color:var(--blue)}
+    .intro{color:var(--muted);line-height:1.45;margin:8px 0 0;max-width:640px}
+    .panel,.preview-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}
+    .preview-card{position:sticky;top:16px}
+    .roster{display:flex;gap:8px;overflow:auto;padding:2px 2px 10px;margin:0 0 16px}
+    .roster button{flex:0 0 96px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;text-align:center;position:relative;color:#191c29}
+    .roster button.selected{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+    .roster img{width:48px;height:48px;border-radius:50%;object-fit:cover;object-position:center 30%;background:#f3efe8}
+    .roster span{display:block;margin-top:6px;font-size:11px;line-height:1.25;font-weight:700;min-height:2.5em}.roster em{display:block;margin-top:2px;font-style:normal;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+    .roster i{position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+    .count{margin:-6px 0 14px;color:var(--muted);font-size:12px}
+    label{display:block;font-size:13px;font-weight:700}select{width:100%;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:white;color:#191c29}
+    .control{margin:0 0 16px}.control-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:6px}.control-head label{margin:0}
+    .value{color:var(--blue);font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
+    .slider-row{display:grid;grid-template-columns:36px 36px minmax(0,1fr) 36px 36px;gap:6px;align-items:center}
+    .slider-row button,.buttons button,.preview-controls button,.check{border:1px solid var(--line);background:#fff;color:#191c29}
+    .slider-row button{height:36px;border-radius:8px;font-weight:800}
+    input[type=range]{width:100%;accent-color:var(--blue);touch-action:pan-y}
+    .range-ends{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:4px}
+    .check{display:flex;align-items:center;gap:8px;min-height:40px;margin:0 0 10px;padding:0 10px;border-radius:9px;font-size:13px;font-weight:700}
+    .check input{width:16px;height:16px;accent-color:var(--blue)}
+    .control.is-off{opacity:.45;pointer-events:none}
+    .spec{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:4px 0 16px}
+    .spec div{background:#f6f5f1;border-radius:10px;padding:8px 10px;min-width:0}
+    .spec strong{display:block;font-size:14px;font-variant-numeric:tabular-nums}
+    .spec span{display:block;margin-top:2px;color:var(--muted);font-size:11px;line-height:1.3}
+    .copy-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-bottom:12px}
+    .buttons{display:flex;flex-wrap:wrap;gap:8px}.buttons button,.preview-controls button{min-height:42px;padding:0 12px;border-radius:9px;font-weight:700}
+    .buttons .primary,.preview-controls .primary{border-color:var(--yellow);background:var(--yellow)}
+    .saved{min-height:18px;color:var(--muted);font-size:12px;margin:12px 0 0}.help{margin:12px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+    .link{display:inline-block;margin-top:12px;color:var(--blue);font-size:14px;font-weight:700;text-decoration:none}
+    .preview-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:12px}
+    .preview-fit{height:min(78vh,860px);position:relative;overflow:hidden;border-radius:12px;background:#e7e4dc;border:1px solid #d4d3d0}
+    .stage{position:absolute;left:50%;top:50%;width:950px;height:1490px;margin-left:-475px;margin-top:-745px;overflow:hidden;background:#d8d5cd;transform-origin:center center}
+    .checker{position:absolute;inset:0;opacity:.35;background-color:#eceae4;background-image:linear-gradient(45deg,#c8c6c0 25%,transparent 25%),linear-gradient(-45deg,#c8c6c0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c8c6c0 75%),linear-gradient(-45deg,transparent 75%,#c8c6c0 75%);background-size:28px 28px;background-position:0 0,0 14px,14px -14px,-14px 0}
+    .person{position:absolute;left:40%;bottom:0;width:34%;height:76%;border-radius:50% 50% 12px 12px;background:linear-gradient(#c9c5bc,#8f8b82);opacity:.72}
+    .person:before{content:'';position:absolute;top:-16%;left:50%;width:48%;height:24%;transform:translateX(-50%);border-radius:50%;background:#b7b3aa}
+    .person span{position:absolute;left:0;right:0;bottom:18%;text-align:center;font-size:28px;font-weight:800;letter-spacing:.08em;color:#fff}
+    #characterPreview{position:absolute;left:-12%;bottom:0;width:min(74%,620px);height:300%;object-fit:contain;object-position:left bottom;transform-origin:left bottom;z-index:1;pointer-events:none}
+    .preview-title{position:absolute;left:18px;top:18px;z-index:2;max-width:70%;padding:10px 12px;border-radius:8px;background:#fffefa;color:#191c29;font-size:18px;font-weight:700}
+    .preview-controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .toggles{display:flex;gap:8px;margin-top:10px}.toggles .check{flex:1;margin:0;justify-content:center}
+    .stage.hide-checker .checker,.stage.hide-person .person{display:none}
+    @media(max-width:860px){body{padding:14px}.layout{grid-template-columns:1fr}.preview-card{position:static;grid-row:2}.spec{grid-template-columns:1fr 1fr}.header,header{align-items:start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="layout">
+    <header>
+      <div>
+        <h1>Ajuste dos personagens</h1>
+        <p class="intro">Enquadre cada santo ao lado da pessoa. A prévia usa o mesmo quadro da TV vertical, e a foto sai no final do vídeo.</p>
+      </div>
+      <div class="brand">SANTO<b>SELFIE</b></div>
+    </header>
+
+    <section class="panel" aria-label="Controles do personagem">
+      <div class="roster" id="roster" aria-label="Personagens"></div>
+      <p class="count" id="count"></p>
+      <label for="character">Personagem</label>
+      <div style="margin:8px 0 16px"><select id="character"></select></div>
+
+      <div class="control">
+        <div class="control-head"><label for="size">Tamanho</label><output class="value" id="sizeValue"></output></div>
+        <div class="slider-row"><button type="button" data-nudge="size" data-step="-5">−5</button><button type="button" data-nudge="size" data-step="-1">−</button><input id="size" type="range" min="20" max="240" step="1" value="100"><button type="button" data-nudge="size" data-step="1">+</button><button type="button" data-nudge="size" data-step="5">+5</button></div>
+        <div class="range-ends"><span>20%</span><span>100% é o padrão do tipo</span><span>240%</span></div>
+      </div>
+      <div class="control">
+        <div class="control-head"><label for="horizontal">Esquerda / direita</label><output class="value" id="horizontalValue"></output></div>
+        <div class="slider-row"><button type="button" data-nudge="horizontal" data-step="-5">−5</button><button type="button" data-nudge="horizontal" data-step="-1">−</button><input id="horizontal" type="range" min="-90" max="90" step="1" value="0"><button type="button" data-nudge="horizontal" data-step="1">+</button><button type="button" data-nudge="horizontal" data-step="5">+5</button></div>
+        <div class="range-ends"><span>Esquerda</span><span>Direita</span></div>
+      </div>
+      <div class="control">
+        <div class="control-head"><label for="vertical">Subir / descer</label><output class="value" id="verticalValue"></output></div>
+        <div class="slider-row"><button type="button" data-nudge="vertical" data-step="-5">−5</button><button type="button" data-nudge="vertical" data-step="-1">−</button><input id="vertical" type="range" min="-90" max="90" step="1" value="0"><button type="button" data-nudge="vertical" data-step="1">+</button><button type="button" data-nudge="vertical" data-step="5">+5</button></div>
+        <div class="range-ends"><span>Sobe</span><span>Desce</span></div>
+      </div>
+      <label class="check"><input id="widthAuto" type="checkbox" checked> Largura automática da TV</label>
+      <div class="control" id="widthControl">
+        <div class="control-head"><label for="width">Largura no quadro</label><output class="value" id="widthValue"></output></div>
+        <div class="slider-row"><button type="button" data-nudge="width" data-step="-5">−5</button><button type="button" data-nudge="width" data-step="-1">−</button><input id="width" type="range" min="30" max="160" step="1" value="74"><button type="button" data-nudge="width" data-step="1">+</button><button type="button" data-nudge="width" data-step="5">+5</button></div>
+        <div class="range-ends"><span>30%</span><span>160%</span></div>
+      </div>
+
+      <div class="spec" aria-label="Posição aplicada no totem">
+        <div><strong id="specLeft">—</strong><span>esquerda final</span></div>
+        <div><strong id="specBottom">—</strong><span>base final</span></div>
+        <div><strong id="specScale">—</strong><span>escala final</span></div>
+        <div><strong id="specWidth">—</strong><span>largura no quadro</span></div>
+      </div>
+
+      <label for="copyFrom">Copiar o ajuste de outro personagem</label>
+      <div class="copy-row"><select id="copyFrom"></select><button id="copyBtn" type="button">Copiar</button></div>
+      <div class="buttons"><button class="primary" id="resetOne" type="button">Restaurar este</button><button id="resetAll" type="button">Restaurar todos</button></div>
+      <p class="saved" id="savedStatus" aria-live="polite">Os ajustes são salvos automaticamente.</p>
+      <p class="help">O totem aberto no mesmo navegador e no mesmo endereço recebe o ajuste na hora. 100% de tamanho é o padrão de cada tipo: fotos um pouco maiores e à esquerda, desenhos um pouco menores e centralizados.</p>
+      <a class="link" href="./index.html">Abrir o SantoSelfie</a>
+    </section>
+
+    <section class="preview-card" aria-label="Prévia do personagem">
+      <div class="preview-head"><h2>Prévia da foto</h2><span class="help" style="margin:0">Quadro de 950 × 1490</span></div>
+      <div class="preview-fit" id="previewFit">
+        <div class="stage" id="stage">
+          <div class="checker"></div>
+          <div class="person" aria-hidden="true"><span>PESSOA</span></div>
+          <video id="characterPreview" muted playsinline></video>
+          <span class="preview-title" id="previewTitle">Selecione um personagem</span>
+        </div>
+      </div>
+      <div class="preview-controls">
+        <button class="primary" id="playVideo" type="button">Rolar vídeo</button>
+        <button id="endFrame" type="button">Ir para o final</button>
+      </div>
+      <div class="toggles">
+        <label class="check"><input id="showPerson" type="checkbox" checked> Pessoa</label>
+        <label class="check"><input id="showChecker" type="checkbox" checked> Transparência</label>
+      </div>
+      <p class="help">A silhueta marca onde a pessoa fica na foto. O quadriculado é a área transparente do vídeo. A captura usa o último instante do clipe.</p>
+    </section>
+  </main>
+  <script>
+    const KEY='santos-selfie-character-layouts-v1';
+    const channel=typeof BroadcastChannel!=='undefined'?new BroadcastChannel('santos-selfie-character-layouts'):null;
+    const STAGE={width:950,height:1490};
+    const characters=[
+      ['Santo Antônio de Pádua','santo-antonio-de-padua','santo-antonio'],
+      ['Santa Dulce dos Pobres','santa-dulce-dos-pobres','santa-dulce'],
+      ['São Padre Pio','padrepio','sao-padre-pio'],
+      ['Santa Rita de Cássia','ritadecassia','santa-rita-de-cassia'],
+      ['São Carlo Acutis','sao-carlo-acutis','sao-carlo-acutis'],
+      ['São João Paulo II','sao-joao-paulo-ii','sao-joao-paulo-ii'],
+      ['Maria (Desenho)','maria','maria'],
+      ['Menino Jesus (Desenho)','menino-jesus','menino-jesus'],
+      ['São José (Desenho)','sao-jose','jose'],
+      ['São Pio X (Desenho)','sao-pio-x','piox-desenho'],
+      ['São Miguel Arcanjo (Desenho)','sao-miguel-arcanjo','sao-miguel-arcanjo'],
+      ['São Pio X','sao-pio-x-3d','piox-3d']
+    ];
+    const select=document.getElementById('character');
+    const copyFrom=document.getElementById('copyFrom');
+    const video=document.getElementById('characterPreview');
+    const size=document.getElementById('size');
+    const horizontal=document.getElementById('horizontal');
+    const vertical=document.getElementById('vertical');
+    const width=document.getElementById('width');
+    const widthAuto=document.getElementById('widthAuto');
+    const status=document.getElementById('savedStatus');
+    const playButton=document.getElementById('playVideo');
+    const stage=document.getElementById('stage');
+
+    select.innerHTML=characters.map(([name])=>`<option>${name}</option>`).join('');
+    document.getElementById('roster').innerHTML=characters.map(([name, ,profile])=>`<button type="button" data-name="${name}"><img src="./perfil/${profile}.webp" alt=""><span>${name.replace(' (Desenho)','')}</span>${name.endsWith('(Desenho)')?'<em>desenho</em>':''}</button>`).join('');
+
+    function clamp(value,fallback,min,max){const number=Number(value);return Number.isFinite(number)?Math.min(max,Math.max(min,number)):fallback;}
+    function layoutFor(name,saved){
+      saved=saved||{};
+      const drawing=name.endsWith('(Desenho)');
+      const centered=drawing||name==='São João Paulo II'||name==='São Carlo Acutis';
+      return{
+        scale:(drawing?0.9:1.25)*clamp(saved.scale,1,.2,2.4),
+        left:(centered?0:-12)+clamp(saved.x,0,-90,90),
+        bottom:(drawing?-6:0)-clamp(saved.y,0,-90,90),
+        width:saved.width==null?null:clamp(saved.width,74,30,160),
+        drawing
+      };
+    }
+    function layouts(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch{return{};}}
+    function custom(entry){return!!entry&&(entry.scale!==1||entry.x!==0||entry.y!==0||entry.width!=null);}
+    function publish(all,message){localStorage.setItem(KEY,JSON.stringify(all));if(channel)channel.postMessage({key:KEY});status.textContent=message||'Salvo. O totem deste navegador atualiza na hora.';}
+    function signed(value){const number=Math.round(Number(value));return`${number>0?'+':''}${number}%`;}
+    function fillCopyList(){const current=select.value;copyFrom.innerHTML=characters.filter(([name])=>name!==current).map(([name])=>`<option>${name}</option>`).join('');}
+    function renderRoster(){
+      const all=layouts();
+      document.querySelectorAll('.roster button').forEach(button=>{
+        button.classList.toggle('selected',button.dataset.name===select.value);
+        const mark=button.querySelector('i')||button.appendChild(document.createElement('i'));
+        mark.hidden=!custom(all[button.dataset.name]);
+      });
+      const total=characters.filter(([name])=>custom(all[name])).length;
+      document.getElementById('count').textContent=`${total} de ${characters.length} com ajuste próprio`;
+    }
+    function readControls(){
+      const entry={scale:Number(size.value)/100,x:Number(horizontal.value),y:Number(vertical.value)};
+      if(!widthAuto.checked)entry.width=Number(width.value);
+      return entry;
+    }
+    function updatePreview(){
+      const saved=layouts()[select.value]||{};
+      const entry={scale:saved.scale??1,x:saved.x??0,y:saved.y??0};
+      size.value=Math.round(clamp(entry.scale,1,.2,2.4)*100);
+      horizontal.value=clamp(entry.x,0,-90,90);
+      vertical.value=clamp(entry.y,0,-90,90);
+      widthAuto.checked=saved.width==null;
+      width.value=saved.width==null?74:clamp(saved.width,74,30,160);
+      document.getElementById('widthControl').classList.toggle('is-off',widthAuto.checked);
+      document.getElementById('sizeValue').textContent=`${size.value}%`;
+      document.getElementById('horizontalValue').textContent=signed(horizontal.value);
+      document.getElementById('verticalValue').textContent=signed(vertical.value);
+      document.getElementById('widthValue').textContent=widthAuto.checked?'automática':`${width.value}%`;
+      const position=layoutFor(select.value,readControls());
+      const pixels=position.width==null?Math.min(STAGE.width*.74,620):STAGE.width*(position.width/100);
+      video.style.left=`${position.left}%`;
+      video.style.bottom=`${position.bottom}%`;
+      video.style.transform=`scale(${position.scale})`;
+      video.style.width=position.width==null?'':`${position.width}%`;
+      document.getElementById('specLeft').textContent=signed(position.left);
+      document.getElementById('specBottom').textContent=signed(position.bottom);
+      document.getElementById('specScale').textContent=`${position.scale.toFixed(2)}×`;
+      document.getElementById('specWidth').textContent=`${Math.round(pixels)} px`;
+      document.getElementById('previewTitle').textContent=select.value;
+      renderRoster();
+    }
+    function saveCurrent(){
+      const all=layouts();
+      const entry=readControls();
+      if(!custom(entry))delete all[select.value];else all[select.value]=entry;
+      publish(all);
+      updatePreview();
+    }
+    function nudge(input,step){
+      if(input===width&&widthAuto.checked)return;
+      input.value=clamp(Number(input.value)+step,input.value,input.min,input.max);
+      saveCurrent();
+    }
+    let rushing=false;
+    function showEnd(){
+      if(!Number.isFinite(video.duration)||video.duration===0)return;
+      if(video.currentTime>video.duration-.12){video.pause();video.playbackRate=1;playButton.textContent='Rolar vídeo';rushing=false;return;}
+      rushing=true;
+      video.playbackRate=16;
+      playButton.textContent='Indo para o final…';
+      video.play().catch(()=>{rushing=false;video.playbackRate=1;playButton.textContent='Rolar vídeo';});
+    }
+    function loadCharacter(){
+      video.pause();
+      playButton.textContent='Rolar vídeo';
+      const file=characters[select.selectedIndex][1];
+      video.src=`./videos-santos/${file}.webm`;
+      video.load();
+      fillCopyList();
+      updatePreview();
+    }
+    function fitStage(){
+      const fit=document.getElementById('previewFit');
+      const scale=Math.min(fit.clientWidth/STAGE.width,fit.clientHeight/STAGE.height);
+      stage.style.transform=`scale(${scale||1})`;
+    }
+
+    video.onloadedmetadata=()=>showEnd();
+    video.onended=()=>{rushing=false;video.playbackRate=1;playButton.textContent='Rolar vídeo';};
+    playButton.onclick=async()=>{
+      if(!video.paused){video.pause();video.playbackRate=1;rushing=false;playButton.textContent='Rolar vídeo';return;}
+      rushing=false;
+      video.playbackRate=1;
+      if(!Number.isFinite(video.currentTime)||video.currentTime>video.duration-.2)video.currentTime=0;
+      playButton.textContent='Pausar';
+      try{await video.play();}catch{playButton.textContent='Tentar de novo';}
+    };
+    document.getElementById('endFrame').onclick=showEnd;
+    select.onchange=loadCharacter;
+    document.getElementById('roster').onclick=event=>{const button=event.target.closest('button');if(!button)return;select.value=button.dataset.name;loadCharacter();};
+    [size,horizontal,vertical,width].forEach(input=>input.addEventListener('input',saveCurrent));
+    document.querySelectorAll('[data-nudge]').forEach(button=>button.onclick=()=>nudge(document.getElementById(button.dataset.nudge),Number(button.dataset.step)));
+    widthAuto.onchange=saveCurrent;
+    document.getElementById('copyBtn').onclick=()=>{const all=layouts();const source=all[copyFrom.value];if(source)all[select.value]={...source};else delete all[select.value];publish(all,source?`Ajuste copiado de ${copyFrom.value}.`:` ${copyFrom.value} está no padrão, então este também voltou ao padrão.`.trim());updatePreview();};
+    document.getElementById('resetOne').onclick=()=>{const all=layouts();delete all[select.value];publish(all,`${select.value} voltou ao padrão.`);updatePreview();};
+    document.getElementById('resetAll').onclick=()=>{if(!confirm('Restaurar o enquadramento de todos os personagens?'))return;localStorage.removeItem(KEY);if(channel)channel.postMessage({key:KEY});updatePreview();status.textContent='Todos os personagens voltaram ao padrão.';};
+    document.getElementById('showPerson').onchange=event=>stage.classList.toggle('hide-person',!event.target.checked);
+    document.getElementById('showChecker').onchange=event=>stage.classList.toggle('hide-checker',!event.target.checked);
+    window.addEventListener('resize',fitStage);
+    loadCharacter();
+    fitStage();
+  </script>
+</body>
+</html>
